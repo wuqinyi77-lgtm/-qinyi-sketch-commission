@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="沁頤藝術委託系統｜用水彩速寫留下重要的人與故事" />
+  <title>沁頤藝術委託｜速速相見 Sketch + Meet</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav container">
+      <a class="brand" href="#top">速速相見 <span>Sketch + Meet</span></a>
+      <a class="nav-link" href="#commission">開始委託</a>
+    </nav>
+    <div id="top" class="hero-inner container">
+      <p class="eyebrow">沁頤藝術委託系統</p>
+      <h1>有些人<br />有些時刻<br />值得被好好留下來</h1>
+      <p class="hero-copy">在談尺寸和價格以前<br />我想先知道<br /><strong>這幅畫，對你來說為什麼重要？</strong></p>
+      <a class="primary-button" href="#commission">慢慢告訴我這段故事</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro container">
+      <p class="section-kicker">不是只把照片重新畫一次</p>
+      <h2>我會先理解這段關係<br />再替你找到適合的創作方式</h2>
+      <div class="steps">
+        <article><span>01</span><h3>被理解</h3><p>從人物、故事與希望留下的感受開始。</p></article>
+        <article><span>02</span><h3>被推薦</h3><p>依照尺寸、人物數量、創作深度與預算整理方案。</p></article>
+        <article><span>03</span><h3>親自確認</h3><p>送出後由沁頤確認內容，再寄出正式報價。</p></article>
+      </div>
+    </section>
+
+    <section class="services">
+      <div class="container">
+        <p class="section-kicker">不同方式，適合不同的心意</p>
+        <h2>創作方案</h2>
+        <div class="service-grid">
+          <article class="service-card">
+            <p class="service-label">自由流動速寫</p>
+            <h3>NT$8,000 起</h3>
+            <p>提供照片與喜歡的色彩，其餘交給沁頤自由詮釋。</p>
+            <small>適合：想保留影片裡自然、流動感的速寫</small>
+          </article>
+          <article class="service-card featured">
+            <p class="service-label">故事收藏型速寫</p>
+            <h3>單人 NT$15,000 起</h3>
+            <p>先理解人物、關係與故事，再進行完整創作。</p>
+            <small>適合：生日、紀念、家人與重要的人</small>
+          </article>
+          <article class="service-card">
+            <p class="service-label">現場藝術體驗</p>
+            <h3>每場 NT$25,000 起</h3>
+            <p>讓生日、婚禮、聚會或品牌活動成為共同創作。</p>
+            <small>交通、稅金與額外時數另計</small>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="commission" class="commission container">
+      <div class="form-header">
+        <p class="section-kicker">先從心意開始</p>
+        <h2>這次，你最想為誰留下什麼？</h2>
+        <p>不需要一次想得很完整，我們會一步一步整理。</p>
+      </div>
+
+      <div class="progress"><div id="progressBar"></div></div>
+
+      <form id="quoteForm" novalidate>
+        <section class="form-step active" data-step="1">
+          <h3>這次最接近哪一種委託？</h3>
+          <div class="choice-grid">
+            <label><input type="radio" name="type" value="照片委託" required /><span><b>為自己或重要的人收藏</b><small>單人、雙人、家人或寵物</small></span></label>
+            <label><input type="radio" name="type" value="生日／紀念送禮" /><span><b>準備一份有故事的禮物</b><small>生日、畢業、紀念與陪伴</small></span></label>
+            <label><input type="radio" name="type" value="現場活動" /><span><b>讓相聚多一段回憶</b><small>生日、聚會與私人活動</small></span></label>
+            <label><input type="radio" name="type" value="婚禮" /><span><b>記住婚禮裡真實的相遇</b><small>新人、賓客與現場故事</small></span></label>
+            <label><input type="radio" name="type" value="品牌合作" /><span><b>為品牌創造有溫度的體驗</b><small>快閃、VIP 與企業活動</small></span></label>
+          </div>
+          <button type="button" class="next-button">繼續說說這段故事</button>
+        </section>
+
+        <section class="form-step" data-step="2">
+          <h3>我想先認識，畫裡的這個人</h3>
+          <label class="field">想畫的人，和你是什麼關係？<input name="relation" placeholder="例如：媽媽、伴侶、朋友、全家人、品牌貴賓" required /></label>
+          <label class="field">為什麼會在這個時候，想把他畫下來？<textarea name="story" rows="5" placeholder="不用寫得很完整，想到什麼就寫什麼。" required></textarea></label>
+          <label class="field">希望看到作品時，感受到什麼？<input name="feeling" placeholder="例如：被理解、幸福、陪伴、勇氣、想念" /></label>
+          <div class="button-row"><button type="button" class="back-button">上一步</button><button type="button" class="next-button">接著整理需求</button></div>
+        </section>
+
+        <section class="form-step" data-step="3">
+          <h3>讓我替你找出合適的創作方式</h3>
+          <div class="two-cols">
+            <label class="field">人物數量<select name="people"><option value="1">1 位</option><option value="2">2 位</option><option value="3">3 位</option><option value="4">4 位以上</option></select></label>
+            <label class="field">希望尺寸<select name="size"><option value="A4">A4</option><option value="A3">A3</option><option value="大型作品">大型作品</option><option value="現場方案">現場方案</option></select></label>
+            <label class="field">期待的創作深度<select name="depth"><option value="自由速寫">自由流動速寫</option><option value="收藏型速寫" selected>故事收藏型速寫</option><option value="深度故事創作">深度故事創作</option><option value="現場藝術體驗">現場藝術體驗</option></select></label>
+            <label class="field">目前預算範圍<select name="budget"><option value="">還不確定</option><option value="8000">約 NT$8,000</option><option value="15000">約 NT$15,000</option><option value="25000">約 NT$25,000</option><option value="50000">NT$50,000 以上</option></select></label>
+          </div>
+          <label class="field">希望收到作品／舉辦活動的日期<input type="date" name="date" /></label>
+          <div class="button-row"><button type="button" class="back-button">上一步</button><button type="button" id="calculateButton" class="next-button">看看適合的方案</button></div>
+        </section>
+
+        <section class="form-step" data-step="4">
+          <div class="recommendation">
+            <p>沁頤的初步建議</p>
+            <h3 id="planTitle">故事收藏型人物速寫</h3>
+            <div id="planPrice" class="price">NT$15,000 起</div>
+            <p id="planReason">這個方案最能保留人物神韻與你們之間的故事。</p>
+          </div>
+          <div class="summary" id="summary"></div>
+          <div class="two-cols">
+            <label class="field">姓名<input name="name" required /></label>
+            <label class="field">Email<input type="email" name="email" required /></label>
+          </div>
+          <label class="field">Instagram／Line<input name="contact" /></label>
+          <label class="field">還有沒有什麼，是你希望沁頤知道的？<textarea name="extra" rows="4"></textarea></label>
+          <label class="consent"><input type="checkbox" name="consent" required />我同意提供以上資料作為委託聯繫與報價使用</label>
+          <p class="notice">按下送出後，會前往正式 Notion 委託表單。資料送出後將進入 CRM，系統會為沁頤建立 Gmail 回覆草稿，再由沁頤親自確認。</p>
+          <button type="submit" class="submit-button">送出這段故事與委託需求</button>
+          <button type="button" class="back-button full">回上一頁修改</button>
+        </section>
+      </form>
+    </section>
+  </main>
+
+  <footer><div class="container"><p>吳沁頤｜水彩速寫創作者</p><p>呼吸速寫，用畫畫體驗世界</p></div></footer>
+  <script src="app.js"></script>
+</body>
+</html>
