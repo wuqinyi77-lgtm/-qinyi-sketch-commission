@@ -125,7 +125,7 @@ form.addEventListener('submit', event => {
   };
 
   const encoded = encodeURIComponent(JSON.stringify(payload, null, 2));
-  const notionFormUrl = 'https://app.notion.com/p/f7a337379b794eb5b29476e6021df1a6';
+  const notionFormUrl = 'https://trail-particle-ae0.notion.site/31f7de39f6738021aedcc6a99c29f4ea?source=copy_link';
 
   const box = document.createElement('div');
   box.className = 'success-box';
