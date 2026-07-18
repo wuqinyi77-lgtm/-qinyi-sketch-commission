@@ -4,6 +4,9 @@ const progressBar = document.getElementById('progressBar');
 let currentStep = 0;
 let calculated = null;
 
+// 部署 Google Apps Script 後，把 Web App URL 貼在這裡。
+const GOOGLE_APPS_SCRIPT_URL = '';
+
 function showStep(index) {
   steps.forEach((step, i) => step.classList.toggle('active', i === index));
   currentStep = index;
@@ -102,38 +105,61 @@ document.querySelectorAll('.back-button').forEach(button => {
   button.addEventListener('click', () => showStep(Math.max(currentStep - 1, 0)));
 });
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
   if (!validateStep(currentStep)) return;
 
+  const submitButton = form.querySelector('.submit-button');
+  const originalText = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = '正在送出…';
+
   const payload = {
-    委託人: value('name'),
-    Email: value('email'),
-    聯絡方式: value('contact'),
-    委託類型: value('type'),
-    人物關係: value('relation'),
-    故事: value('story'),
-    希望感受: value('feeling'),
-    人物數量: Number(value('people') || 1),
-    作品尺寸: value('size'),
-    創作方式: value('depth'),
-    預算: Number(value('budget') || 0),
-    活動或收件日期: value('date'),
-    初步方案: calculated?.title || '',
-    初步估價: calculated?.price || 0,
-    其他補充: value('extra')
+    name: value('name'),
+    email: value('email'),
+    contact: value('contact'),
+    type: value('type'),
+    relation: value('relation'),
+    story: value('story'),
+    feeling: value('feeling'),
+    people: Number(value('people') || 1),
+    size: value('size'),
+    depth: value('depth'),
+    budget: Number(value('budget') || 0),
+    date: value('date'),
+    plan: calculated?.title || '',
+    price: calculated?.price || 0,
+    extra: value('extra')
   };
 
-  const encoded = encodeURIComponent(JSON.stringify(payload, null, 2));
-  const notionFormUrl = 'https://trail-particle-ae0.notion.site/f7a337379b794eb5b29476e6021df1a6?v=3a07de39f67381288f92000c75455491&source=copy_link';
+  try {
+    if (!GOOGLE_APPS_SCRIPT_URL) {
+      throw new Error('Google Apps Script 尚未完成部署。');
+    }
 
-  const box = document.createElement('div');
-  box.className = 'success-box';
-  box.innerHTML = `需求摘要已整理完成。下一頁會開啟 Notion 委託表單，請將內容送出，之後系統會建立 Gmail 回覆草稿。<br><br><a href="${notionFormUrl}" target="_blank" rel="noopener"><strong>前往正式委託表單</strong></a><br><small>你的摘要已保留在此頁，方便對照填寫。</small>`;
-  form.appendChild(box);
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
 
-  console.log('Commission summary:', encoded);
+    const box = document.createElement('div');
+    box.className = 'success-box';
+    box.innerHTML = `<strong>已收到你的委託需求 🤍</strong><br><br>資料已送入沁頤的 Google 試算表，並建立 Gmail 回覆草稿。沁頤確認後會親自回覆你。`;
+    form.appendChild(box);
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    form.reset();
+  } catch (error) {
+    const box = document.createElement('div');
+    box.className = 'success-box';
+    box.innerHTML = `<strong>目前還差最後一個 Google 授權步驟。</strong><br><br>${error.message}<br>網站內容已保留，請稍後再試。`;
+    form.appendChild(box);
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+  }
 });
 
 showStep(0);
