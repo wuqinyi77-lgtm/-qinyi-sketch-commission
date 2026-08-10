@@ -76,6 +76,10 @@ h2{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(2rem,4vw,3.2rem
 .summary strong{color:var(--ink)}
 .consent{display:flex;gap:10px;align-items:flex-start;margin:16px 0 20px;color:var(--muted)}
 .notice{font-size:.9rem;background:#f4f0e9;border-radius:14px;padding:14px}
+.budget-note{margin:-8px 0 24px;color:var(--muted);font-size:.92rem;line-height:1.7}
+.event-details{margin:28px 0;padding:clamp(20px,4vw,34px);background:#fbf8f4;border:1px solid var(--line);border-radius:24px}
+.event-heading{margin-bottom:22px}
+.event-heading h3{margin-top:6px;font-size:clamp(1.15rem,2.5vw,1.45rem)}
 .submit-button{width:100%;font-size:1.05rem;padding:15px 24px}
 footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted)}
 footer .container{display:flex;justify-content:space-between;gap:20px}
