@@ -1,11 +1,12 @@
 const form = document.getElementById('quoteForm');
 const steps = [...document.querySelectorAll('.form-step')];
 const progressBar = document.getElementById('progressBar');
+const eventDetails = document.getElementById('eventDetails');
+const deliveryDateField = document.getElementById('deliveryDateField');
+const CONTACT_EMAIL = 'wuqinyi77@gmail.com';
+const EVENT_TYPES = ['現場活動', '婚禮', '品牌合作'];
 let currentStep = 0;
 let calculated = null;
-
-// 部署 Google Apps Script 後，把 Web App URL 貼在這裡。
-const GOOGLE_APPS_SCRIPT_URL = '';
 
 function showStep(index) {
   steps.forEach((step, i) => step.classList.toggle('active', i === index));
@@ -18,7 +19,17 @@ function value(name) {
   const field = form.elements[name];
   if (!field) return '';
   if (field instanceof RadioNodeList) return field.value;
-  return field.value;
+  return field.value.trim();
+}
+
+function isEventInquiry() {
+  return EVENT_TYPES.includes(value('type'));
+}
+
+function updateFieldsForType() {
+  const show = isEventInquiry();
+  eventDetails.hidden = !show;
+  deliveryDateField.hidden = show;
 }
 
 function validateStep(index) {
@@ -32,7 +43,7 @@ function validateStep(index) {
       valid = false;
       const msg = document.createElement('p');
       msg.className = 'error';
-      msg.textContent = field.type === 'checkbox' ? '請先勾選同意後再送出。' : '這一題先簡單告訴我就可以。';
+      msg.textContent = field.type === 'checkbox' ? '請先勾選同意後再寄出。' : '這一題先簡單告訴我就可以。';
       field.closest('label')?.appendChild(msg);
     }
   });
@@ -44,14 +55,13 @@ function quote() {
   const people = Number(value('people') || 1);
   const size = value('size');
   const depth = value('depth');
-  const budget = Number(value('budget') || 0);
   let title = '故事收藏型人物速寫';
   let price = 15000;
   let includes = '故事理解、照片參考、人物與背景創作、基礎包裝';
 
-  if (['現場活動', '婚禮', '品牌合作'].includes(type)) {
+  if (EVENT_TYPES.includes(type)) {
     title = type === '婚禮' ? '婚禮現場藝術體驗' : type === '品牌合作' ? '品牌活動現場創作' : '私人活動現場速寫';
-    price = type === '品牌合作' ? 35000 : 25000;
+    price = type === '婚禮' ? 50000 : type === '品牌合作' ? 45000 : 25000;
     includes = '前期流程確認、現場出席、速寫創作與材料；交通、稅金與額外時數另計';
   } else if (depth === '自由速寫') {
     title = '自由流動水彩速寫';
@@ -66,28 +76,82 @@ function quote() {
     if (size === '大型作品') price += 15000;
   }
 
-  let reason = value('story')
-    ? '你寫下的故事會成為作品的核心，而不是只把照片重新畫一次。'
-    : '這個方案能保留人物神韻，也讓多年後的你重新想起當時的感受。';
-
-  if (budget && budget < price) {
-    reason += ' 目前預算和建議方案有一些差距，我會優先調整尺寸或創作深度，不會直接犧牲最重要的人物與情感。';
-  }
+  const reason = EVENT_TYPES.includes(type)
+    ? '我會依活動流程、希望完成的作品量與預算，規劃真正能在現場執行的方式。'
+    : '你寫下的故事會成為作品的核心，而不只是把照片重新畫一次。';
 
   calculated = { title, price, includes, reason };
   document.getElementById('planTitle').textContent = title;
-  document.getElementById('planPrice').textContent = `NT$${price.toLocaleString('zh-TW')} 起`;
+  document.getElementById('planPrice').textContent = EVENT_TYPES.includes(type) ? '依需求客製規劃' : `NT$${price.toLocaleString('zh-TW')} 起`;
   document.getElementById('planReason').textContent = reason;
   document.getElementById('summary').innerHTML = `
     <strong>委託方向：</strong>${type}<br>
     <strong>人物關係：</strong>${value('relation') || '尚未填寫'}<br>
-    <strong>人物數量：</strong>${people} 位<br>
-    <strong>作品尺寸：</strong>${size}<br>
-    <strong>創作方式：</strong>${depth}<br>
-    <strong>內容包含：</strong>${includes}<br>
+    <strong>人物／賓客數量：</strong>${isEventInquiry() ? value('guestCount') || '尚未確定' : `${people} 位`}<br>
+    <strong>作品／服務方向：</strong>${isEventInquiry() ? value('eventGoal') || depth : depth}<br>
+    <strong>預計預算：</strong>${value('budget') ? `NT$${value('budget')}` : '希望由沁頤建議'}<br>
     <strong>希望感受：</strong>${value('feeling') || '尚未填寫'}
   `;
 }
+
+function line(label, content) {
+  return `${label}：${content || '尚未確定'}`;
+}
+
+function buildEmail() {
+  const type = value('type');
+  const event = isEventInquiry();
+  const subjectDate = event ? value('eventDate') : value('deliveryDate');
+  const subject = `${type}合作詢問｜${value('name')}${subjectDate ? `｜${subjectDate}` : ''}`;
+  const body = [
+    '沁頤您好，',
+    '',
+    '我從網站看見您的作品，想詢問以下委託／合作：',
+    '',
+    '【基本聯絡資料】',
+    line('姓名', value('name')),
+    line('Email', value('email')),
+    line('Instagram／Line', value('contact')),
+    '',
+    '【委託方向】',
+    line('活動／委託類型', type),
+    line('想畫的人與關係', value('relation')),
+    line('這次想留下的故事', value('story')),
+    line('希望作品帶來的感受', value('feeling')),
+    line('期待的創作方式', value('depth')),
+    line('預計合作預算', value('budget') ? `NT$${value('budget')}` : '還不確定，希望由沁頤建議'),
+  ];
+
+  if (event) {
+    body.push(
+      '',
+      '【婚禮／活動資訊】',
+      line('活動日期', value('eventDate')),
+      line('活動時段', value('eventPeriod')),
+      line('預計服務時間', value('serviceTime')),
+      line('地點與場地名稱', value('venue')),
+      line('賓客／參與人數', value('guestCount')),
+      line('最希望留下的內容', value('eventGoal')),
+      line('希望完成的人數／作品量', value('targetOutput')),
+      line('目前流程或安排', value('eventFlow')),
+      '',
+      '如果以上需求需要調整，也希望能依照實際預算，請沁頤協助客製安排服務時間、作品形式與創作重點。'
+    );
+  } else {
+    body.push(
+      line('人物數量', `${value('people')} 位`),
+      line('希望尺寸', value('size')),
+      line('希望收到作品日期', value('deliveryDate'))
+    );
+  }
+
+  body.push('', '【其他補充】', value('extra') || '無', '', '謝謝您，期待您的回覆！');
+  return { subject, body: body.join('\n') };
+}
+
+document.querySelectorAll('input[name="type"]').forEach(input => {
+  input.addEventListener('change', updateFieldsForType);
+});
 
 document.querySelectorAll('.next-button').forEach(button => {
   button.addEventListener('click', () => {
@@ -97,6 +161,7 @@ document.querySelectorAll('.next-button').forEach(button => {
     } else if (!validateStep(currentStep)) {
       return;
     }
+    updateFieldsForType();
     showStep(Math.min(currentStep + 1, steps.length - 1));
   });
 });
@@ -105,61 +170,12 @@ document.querySelectorAll('.back-button').forEach(button => {
   button.addEventListener('click', () => showStep(Math.max(currentStep - 1, 0)));
 });
 
-form.addEventListener('submit', async event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
   if (!validateStep(currentStep)) return;
-
-  const submitButton = form.querySelector('.submit-button');
-  const originalText = submitButton.textContent;
-  submitButton.disabled = true;
-  submitButton.textContent = '正在送出…';
-
-  const payload = {
-    name: value('name'),
-    email: value('email'),
-    contact: value('contact'),
-    type: value('type'),
-    relation: value('relation'),
-    story: value('story'),
-    feeling: value('feeling'),
-    people: Number(value('people') || 1),
-    size: value('size'),
-    depth: value('depth'),
-    budget: Number(value('budget') || 0),
-    date: value('date'),
-    plan: calculated?.title || '',
-    price: calculated?.price || 0,
-    extra: value('extra')
-  };
-
-  try {
-    if (!GOOGLE_APPS_SCRIPT_URL) {
-      throw new Error('Google Apps Script 尚未完成部署。');
-    }
-
-    await fetch(GOOGLE_APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-
-    const box = document.createElement('div');
-    box.className = 'success-box';
-    box.innerHTML = `<strong>已收到你的委託需求 🤍</strong><br><br>資料已送入沁頤的 Google 試算表，並建立 Gmail 回覆草稿。沁頤確認後會親自回覆你。`;
-    form.appendChild(box);
-    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    form.reset();
-  } catch (error) {
-    const box = document.createElement('div');
-    box.className = 'success-box';
-    box.innerHTML = `<strong>目前還差最後一個 Google 授權步驟。</strong><br><br>${error.message}<br>網站內容已保留，請稍後再試。`;
-    form.appendChild(box);
-    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
-  }
+  const { subject, body } = buildEmail();
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
+updateFieldsForType();
 showStep(0);
