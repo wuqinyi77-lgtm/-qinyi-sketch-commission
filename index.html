@@ -95,9 +95,28 @@
             <label class="field">人物數量<select name="people"><option value="1">1 位</option><option value="2">2 位</option><option value="3">3 位</option><option value="4">4 位以上</option></select></label>
             <label class="field">希望尺寸<select name="size"><option value="A4">A4</option><option value="A3">A3</option><option value="大型作品">大型作品</option><option value="現場方案">現場方案</option></select></label>
             <label class="field">期待的創作深度<select name="depth"><option value="自由速寫">自由流動速寫</option><option value="收藏型速寫" selected>故事收藏型速寫</option><option value="深度故事創作">深度故事創作</option><option value="現場藝術體驗">現場藝術體驗</option></select></label>
-            <label class="field">目前預算範圍<select name="budget"><option value="">還不確定</option><option value="8000">約 NT$8,000</option><option value="15000">約 NT$15,000</option><option value="25000">約 NT$25,000</option><option value="50000">NT$50,000 以上</option></select></label>
+            <label class="field">預計合作預算<select name="budget"><option value="">還不確定，希望由沁頤建議</option><option value="8000-15000">NT$8,000–15,000</option><option value="15000-30000">NT$15,000–30,000</option><option value="30000-50000">NT$30,000–50,000</option><option value="50000-80000">NT$50,000–80,000</option><option value="80000以上">NT$80,000 以上</option></select></label>
           </div>
-          <label class="field">希望收到作品／舉辦活動的日期<input type="date" name="date" /></label>
+          <p class="budget-note">每一段故事和現場條件都不同，沁頤可以依實際預算，客製安排服務時間、作品形式與創作重點。</p>
+
+          <div id="eventDetails" class="event-details" hidden>
+            <div class="event-heading">
+              <p class="section-kicker">婚禮／活動資訊</p>
+              <h3>這些資訊能幫助我確認檔期與規劃可執行的方案</h3>
+            </div>
+            <div class="two-cols">
+              <label class="field">活動日期<input type="date" name="eventDate" /></label>
+              <label class="field">活動時段<select name="eventPeriod"><option value="">請選擇</option><option>午宴</option><option>晚宴</option><option>證婚儀式</option><option>全天活動</option><option>其他</option></select></label>
+              <label class="field">預計服務時間<input name="serviceTime" placeholder="例如：11:30–15:30，共 4 小時" /></label>
+              <label class="field">賓客／參與人數<input name="guestCount" inputmode="numeric" placeholder="例如：80 位／10 桌" /></label>
+            </div>
+            <label class="field">活動地點與場地名稱<input name="venue" placeholder="例如：高雄｜OO 婚宴會館；若未確定可填預計縣市" /></label>
+            <label class="field">這次最希望留下什麼？<select name="eventGoal"><option value="">請選擇最接近的方向</option><option>新人收藏的重要時刻與婚禮故事</option><option>提供給賓客帶走的人物速寫</option><option>新人紀念畫＋賓客互動速寫</option><option>重要家人／指定貴賓優先</option><option>還不確定，希望由沁頤規劃</option></select></label>
+            <label class="field">希望盡量畫到的人數／作品量<input name="targetOutput" placeholder="例如：希望覆蓋 50–80 位賓客；或指定 10 位重要家人" /></label>
+            <label class="field">目前流程或想像中的安排<textarea name="eventFlow" rows="4" placeholder="例如：迎賓時與賓客互動、婚宴中捕捉故事；若已有流程表，也可在信件開啟後附上。"></textarea></label>
+          </div>
+
+          <label id="deliveryDateField" class="field">希望收到作品的日期<input type="date" name="deliveryDate" /></label>
           <div class="button-row"><button type="button" class="back-button">上一步</button><button type="button" id="calculateButton" class="next-button">看看適合的方案</button></div>
         </section>
 
@@ -116,8 +135,8 @@
           <label class="field">Instagram／Line<input name="contact" /></label>
           <label class="field">還有沒有什麼，是你希望沁頤知道的？<textarea name="extra" rows="4"></textarea></label>
           <label class="consent"><input type="checkbox" name="consent" required />我同意提供以上資料作為委託聯繫與報價使用</label>
-          <p class="notice">按下送出後，會前往正式 Notion 委託表單。資料送出後將進入 CRM，系統會為沁頤建立 Gmail 回覆草稿，再由沁頤親自確認。</p>
-          <button type="submit" class="submit-button">送出這段故事與委託需求</button>
+          <p class="notice">按下後會開啟你的郵件 App，並自動帶入整理好的詢問內容。你可以再次確認、補充資料或附上參考圖片後，再親自寄出。</p>
+          <button type="submit" class="submit-button">開啟 Email，寄出合作詢問</button>
           <button type="button" class="back-button full">回上一頁修改</button>
         </section>
       </form>
